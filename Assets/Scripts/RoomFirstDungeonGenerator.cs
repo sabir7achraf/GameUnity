@@ -27,11 +27,28 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
       roomCenters.Add((Vector2Int)Vector3Int.RoundToInt(room.center));
     }
     HashSet <Vector2Int> corridors= ConnectRooms(roomCenters);
+     corridors = IncreaseCorridorSize(corridors);
     floor.UnionWith(corridors);
 
     tilemapVisualizer.PainFlorTiles(floor);
     WallGenerator.CreateWalls(floor,tilemapVisualizer);
   }
+  /*********************IncreaseCorridorSize***********************************/
+      private HashSet<Vector2Int> IncreaseCorridorSize(HashSet<Vector2Int> corridors)
+    {
+        HashSet<Vector2Int> enlargedCorridors = new HashSet<Vector2Int>();
+        foreach (var corridorTile in corridors)
+        {
+            for (int x = -1; x <= 1; x++)
+            {
+                for (int y = -1; y <= 1; y++)
+                {
+                    enlargedCorridors.Add(corridorTile + new Vector2Int(x, y));
+                }
+            }
+        }
+        return enlargedCorridors;
+    }
   /*****************************ConnectRooms*************************************************/
 private HashSet<Vector2Int> ConnectRooms(List<Vector2Int> roomCenters){
   HashSet <Vector2Int> corridors= new HashSet<Vector2Int>();
