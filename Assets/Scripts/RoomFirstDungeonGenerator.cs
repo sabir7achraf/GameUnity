@@ -4,7 +4,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 
-public class RoomFirstDungeonGenerator : RandomWalkMap
+public class RoomFirstDungeonGenerator : RandomWalkMap  
 {
   [SerializeField]
   private int minRoomWidth =4, minRoomHeight=4;
@@ -15,10 +15,29 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
   private int offset =1;
   [SerializeField]
   private bool randomWalkRooms =false;
+  [SerializeField]
+   private int numRooms = 5;
+     [SerializeField]
+    private EnemyFactory enemyFactory;
+    [SerializeField]
+    private Transform enemiesParent;
+    [SerializeField]
+    private CoinFactory CoinFactory;
+    [SerializeField]
+    private Transform coinsParent;
+
+    private List<GameObject> enemyInstances = new List<GameObject>();
+    private List<GameObject> coinInstances = new List<GameObject>();
+
   protected override void RunProceduralGeneration(){
-    CreateRooms();
+   
+            List<BoundsInt> rooms = CreateRooms();
+        GenerateEnemiesInRooms(rooms);
+        GenerateCoinsInRooms(rooms);
+
   }
-  private void CreateRooms(){
+  private  List<BoundsInt> CreateRooms(){
+
     var roomList =ProceduralGeneratingAlgorithme.BinarySpacePartition(new BoundsInt ((Vector3Int)startPosition,new Vector3Int (dungeonWidth ,dungeonHeight,0)),minRoomWidth,minRoomHeight);
     HashSet<Vector2Int> floor = new HashSet<Vector2Int>();
     floor =CreateSimpleRooms(roomList);
@@ -26,15 +45,70 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
     foreach( var room in roomList){
       roomCenters.Add((Vector2Int)Vector3Int.RoundToInt(room.center));
     }
-    HashSet <Vector2Int> corridors= ConnectRooms(roomCenters);
-     corridors = IncreaseCorridorSize(corridors);
-    floor.UnionWith(corridors);
 
-    tilemapVisualizer.PainFlorTiles(floor);
+        HashSet<Vector2Int> corridors = ConnectRooms(roomCenters);
+        corridors = IncreaseCorridorSize(corridors);
+
+        floor.UnionWith(corridors);
+
+
+        tilemapVisualizer.PainFlorTiles(floor);
     WallGenerator.CreateWalls(floor,tilemapVisualizer);
+    return roomList;
   }
-  /*********************IncreaseCorridorSize***********************************/
-      private HashSet<Vector2Int> IncreaseCorridorSize(HashSet<Vector2Int> corridors)
+    /****************************************SpawnEnemies****************************/
+    private void GenerateEnemiesInRooms(List<BoundsInt> rooms)
+    {
+        foreach (var enemyInstance in enemyInstances)
+        {
+            DestroyImmediate(enemyInstance);
+        }
+        enemyInstances.Clear();
+
+        foreach (var roomBounds in rooms)
+        {
+            GenerateEnemyInRoom(roomBounds);
+        }
+    }
+
+    private void GenerateEnemyInRoom(BoundsInt roomBounds)
+    {
+        int numberOfEnemies = Random.Range(1, 5);
+        for (int i = 0; i < numberOfEnemies; i++)
+        {
+            Vector3 randomPosition = new Vector3(Random.Range(roomBounds.min.x + 5, roomBounds.max.x - 5), Random.Range(roomBounds.min.y + 5, roomBounds.max.y - 5), 0);
+            GameObject newEnemy = enemyFactory.CreateEnemy(randomPosition, enemiesParent);
+            enemyInstances.Add(newEnemy);
+        }
+    }
+/********************GenerateCoinsInRooms************************/
+    private void GenerateCoinsInRooms(List<BoundsInt> rooms)
+    {
+        foreach (var coinInstance in coinInstances)
+        {
+            DestroyImmediate(coinInstance);
+        }
+        coinInstances.Clear();
+
+        foreach (var roomBounds in rooms)
+        {
+            GenerateCoinInRoom(roomBounds);
+        }
+    }
+
+    private void GenerateCoinInRoom(BoundsInt roomBounds)
+    {
+        int numberOfCoins = Random.Range(1, 20);
+        for (int i = 0; i < numberOfCoins; i++)
+        {
+            Vector3 randomPosition = new Vector3(Random.Range(roomBounds.min.x + 5, roomBounds.max.x - 5), Random.Range(roomBounds.min.y + 5, roomBounds.max.y - 5), 0);
+            GameObject newCoin = CoinFactory.CreateCoin(randomPosition, coinsParent);
+            coinInstances.Add(newCoin);
+        }
+    }
+
+    /****************************************IncreaseCorridorSize****************************/
+    private HashSet<Vector2Int> IncreaseCorridorSize(HashSet<Vector2Int> corridors)
     {
         HashSet<Vector2Int> enlargedCorridors = new HashSet<Vector2Int>();
         foreach (var corridorTile in corridors)
@@ -49,8 +123,8 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
         }
         return enlargedCorridors;
     }
-  /*****************************ConnectRooms*************************************************/
-private HashSet<Vector2Int> ConnectRooms(List<Vector2Int> roomCenters){
+    /*****************************ConnectRooms*************************************************/
+    private HashSet<Vector2Int> ConnectRooms(List<Vector2Int> roomCenters){
   HashSet <Vector2Int> corridors= new HashSet<Vector2Int>();
   var currentRoomCenter =roomCenters[Random.Range(0,roomCenters.Count)];
   roomCenters.Remove(currentRoomCenter);
