@@ -76,7 +76,7 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
         int numberOfEnemies = Random.Range(1, 5);
         for (int i = 0; i < numberOfEnemies; i++)
         {
-            Vector3 randomPosition = new Vector3(Random.Range(roomBounds.min.x + 5, roomBounds.max.x - 5), Random.Range(roomBounds.min.y + 5, roomBounds.max.y - 5), 0);
+            Vector3 randomPosition = new Vector3(Random.Range(roomBounds.min.x +3, roomBounds.max.x - 3), Random.Range(roomBounds.min.y + 3, roomBounds.max.y - 3), 0);
             GameObject newEnemy = enemyFactory.CreateEnemy(randomPosition, enemiesParent);
             enemyInstances.Add(newEnemy);
         }
@@ -101,7 +101,7 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
         int numberOfCoins = Random.Range(1, 20);
         for (int i = 0; i < numberOfCoins; i++)
         {
-            Vector3 randomPosition = new Vector3(Random.Range(roomBounds.min.x + 5, roomBounds.max.x - 5), Random.Range(roomBounds.min.y + 5, roomBounds.max.y - 5), 0);
+            Vector3 randomPosition = new Vector3(Random.Range(roomBounds.min.x + 10, roomBounds.max.x - 10), Random.Range(roomBounds.min.y + 10, roomBounds.max.y - 10), 0);
             GameObject newCoin = CoinFactory.CreateCoin(randomPosition, coinsParent);
             coinInstances.Add(newCoin);
         }
