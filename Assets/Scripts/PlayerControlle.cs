@@ -58,6 +58,11 @@ public class PlayerController : MonoBehaviour
 
     void HandleAnimation()
     {
+        // Met à jour les variables du blend tree
+        animator.SetFloat("Look X", input.x);
+        animator.SetFloat("Look Y", input.y);
+
+        // Met à jour la vitesse de déplacement
         animator.SetFloat("Speed", speed);
 
         // Handle Hit Trigger
