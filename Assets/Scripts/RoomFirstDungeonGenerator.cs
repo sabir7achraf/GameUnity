@@ -158,8 +158,8 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
         for (int i = 0; i < numberOfEnemies; i++)
         {
             // Générer une position aléatoire à l'intérieur de la pièce en tenant compte des marges de 3
-            float randomX = Random.Range(roomBounds.min.x + 3, roomBounds.max.x - 3);
-            float randomY = Random.Range(roomBounds.min.y + 3, roomBounds.max.y - 3);
+            float randomX = Random.Range(roomBounds.min.x+5, roomBounds.max.x-5);
+            float randomY = Random.Range(roomBounds.min.y+5, roomBounds.max.y-5);
             Vector3 enemyPosition = new Vector3(randomX, randomY, 0);
 
             // Instancier un ennemi à la position aléatoire
@@ -192,8 +192,8 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
         for (int i = 0; i < numberOfEnemies; i++)
         {
             // Générer une position aléatoire à l'intérieur de la pièce en tenant compte des marges de 3
-            float randomX = Random.Range(roomBounds.min.x + 2, roomBounds.max.x - 2);
-            float randomY = Random.Range(roomBounds.min.y + 2, roomBounds.max.y - 2);
+            float randomX = Random.Range(roomBounds.min.x + 3, roomBounds.max.x - 3);
+            float randomY = Random.Range(roomBounds.min.y + 3, roomBounds.max.y - 3);
             Vector3 coinsPosition = new Vector3(randomX, randomY, 0);
             // Instancier un ennemi à la position aléatoire
             GameObject coinsInstance = Instantiate(coinsPrefab, coinsPosition, Quaternion.identity);

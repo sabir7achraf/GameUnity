@@ -12,17 +12,15 @@ public class EnemyController : MonoBehaviour
 
    // Private variables
    Rigidbody2D rigidbody2d;
+   Animator animator;
    float timer;
    int direction = 1;
-
-   // Reference to GridA
-   GridA grid;
 
    // Start is called before the first frame update
    void Start()
    {
        rigidbody2d = GetComponent<Rigidbody2D>();
-       grid = FindObjectOfType<GridA>();
+       animator = GetComponent<Animator>(); // Get the Animator component
        timer = changeTime;
    }
 
@@ -35,6 +33,7 @@ public class EnemyController : MonoBehaviour
        {
            direction = -direction;
            timer = changeTime;
+           UpdateAnimator();
        }
    }
 
@@ -60,12 +59,19 @@ public class EnemyController : MonoBehaviour
        else
        {
            direction = -direction; // Reverse direction if the new position is not walkable
+           UpdateAnimator();
        }
+   }
+
+   void UpdateAnimator()
+   {
+       bool movingBackward = direction > 0;
+       animator.SetBool("Back", movingBackward);
    }
 
    bool IsPositionWalkable(Vector2 position)
    {
-       Collider2D hitCollider = Physics2D.OverlapCircle(position, grid.nodeRadius, unwalkableMask);
+       Collider2D hitCollider = Physics2D.OverlapCircle(position, 0.1f, unwalkableMask); // Utilisation d'un petit rayon pour vérifier une zone ponctuelle
        return hitCollider == null;
    }
 }
