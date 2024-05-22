@@ -90,5 +90,9 @@ public class GridA : MonoBehaviour
 
 
     }
+        public Vector3 WorldPointFromNode(Node node)
+    {
+        return node.worldPosition;
+    }
 
 }

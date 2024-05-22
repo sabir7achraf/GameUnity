@@ -15,10 +15,18 @@ public class DijkstraPathfinding : MonoBehaviour
 
     void Update()
     {
-        FindPath(player.position, boss.position);
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            List<Vector3> path = DjikstraFindPath(player.position, boss.position);
+            if (path != null)
+            {
+                // Faites quelque chose avec le chemin, par exemple passer à un autre script.
+                FindObjectOfType<FollowDjikstra>().SetPath(path);
+            }
+        }
     }
 
-    void FindPath(Vector3 startPos, Vector3 targetPos)
+    List<Vector3> DjikstraFindPath(Vector3 startPos, Vector3 targetPos)
     {
         Node startNode = grid.NodeFromWorldPoint(startPos);
         Node targetNode = grid.NodeFromWorldPoint(targetPos);
@@ -26,12 +34,12 @@ public class DijkstraPathfinding : MonoBehaviour
         List<Node> openSet = new List<Node>();
         HashSet<Node> closedSet = new HashSet<Node>();
 
+        startNode.gCost = 0;
         openSet.Add(startNode);
 
         while (openSet.Count > 0)
         {
             Node currentNode = openSet[0];
-
             for (int i = 1; i < openSet.Count; i++)
             {
                 if (openSet[i].gCost < currentNode.gCost)
@@ -45,8 +53,7 @@ public class DijkstraPathfinding : MonoBehaviour
 
             if (currentNode == targetNode)
             {
-                RetracePath(startNode, targetNode);
-                return;
+                return RetracePath(startNode, targetNode);
             }
 
             foreach (Node neighbour in grid.GetNeighbours(currentNode))
@@ -69,9 +76,11 @@ public class DijkstraPathfinding : MonoBehaviour
                 }
             }
         }
+
+        return null; // Aucun chemin trouvé
     }
 
-    void RetracePath(Node startNode, Node endNode)
+    List<Vector3> RetracePath(Node startNode, Node endNode)
     {
         List<Node> path = new List<Node>();
         Node currentNode = endNode;
@@ -83,7 +92,13 @@ public class DijkstraPathfinding : MonoBehaviour
         }
         path.Reverse();
 
-        grid.path = path;
+        List<Vector3> waypoints = new List<Vector3>();
+        foreach (Node node in path)
+        {
+            waypoints.Add(grid.WorldPointFromNode(node));
+        }
+
+        return waypoints;
     }
 
     int GetDistance(Node nodeA, Node nodeB)
