@@ -72,9 +72,10 @@ public class PlayerController : MonoBehaviour
         }
 
         // Handle Launch Trigger
-        if (Keyboard.current.enterKey.wasPressedThisFrame)
+        if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             animator.SetTrigger("Launch");
-        }
+        
     }
+}
 }
