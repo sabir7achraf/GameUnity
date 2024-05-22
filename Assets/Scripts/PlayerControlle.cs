@@ -11,6 +11,10 @@ public class PlayerController : MonoBehaviour
     private Vector2 input;
     private float speed;
 
+    public int maxHealth = 5;
+    public int health { get { return currentHealth; }}
+    int currentHealth;
+
     void Start()
     {
         if (animator == null)
@@ -75,7 +79,28 @@ public class PlayerController : MonoBehaviour
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             animator.SetTrigger("Launch");
-        
+        }
     }
-}
+
+    public void ChangeHealth(int amount)
+    {
+        // Changer la santé actuelle en ajoutant le montant et en la limitant entre 0 et maxHealth
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
+        
+        // Afficher la nouvelle valeur de la santé dans la console pour le débogage
+        Debug.Log(currentHealth + "/" + maxHealth);
+        
+        // Si la santé atteint 0, déclencher des actions supplémentaires (par exemple, la mort du joueur)
+        if (currentHealth <= 0)
+        {
+            // Par exemple, jouer une animation de mort
+            animator.SetTrigger("Die");
+
+            // Autres actions possibles :
+            // - Désactiver les contrôles du joueur
+            // - Afficher un écran de game over
+            // - Réinitialiser le niveau
+            // - Etc.
+        }
+    }
 }
