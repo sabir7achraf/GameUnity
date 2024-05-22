@@ -16,19 +16,33 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
     private bool randomWalkRooms = false;
     [SerializeField]
     private GameObject enemyPrefab;
-      [SerializeField]
+    [SerializeField]
     private GameObject coinsPrefab;
     private List<GameObject> enemyInstances = new List<GameObject>();
     private List<GameObject> coinsInstances = new List<GameObject>();
 
+    //variables pour joueur et le Boss
+
+    [SerializeField]
+    private GameObject playerPrefab; // Préfabriqué de joueur
+    [SerializeField]
+    private GameObject bossPrefab; // Préfabriqué de boss
+
+    private List<BoundsInt> roomList; // Liste des rooms
+    private GameObject playerInstance; // Instance de joueur
+    private GameObject bossInstance; // Instance de boss
+
+
     protected override void RunProceduralGeneration()
     {
         CreateRooms();
-    }
+        InstantiatePlayerAndBoss();
 
+    }
+    
     private void CreateRooms()
     {
-        var roomList = ProceduralGeneratingAlgorithme.BinarySpacePartition(
+        roomList = ProceduralGeneratingAlgorithme.BinarySpacePartition(
             new BoundsInt((Vector3Int)startPosition, new Vector3Int(dungeonWidth, dungeonHeight, 0)),
             minRoomWidth, minRoomHeight
         );
@@ -53,6 +67,51 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
         WallGenerator.CreateWalls(floor, tilemapVisualizer);
     }
 
+    private void InstantiatePlayerAndBoss()
+    {
+        if (roomList == null || roomList.Count == 0)
+        {
+            Debug.LogError("roomList is null or empty");
+            return;
+        }
+    
+        // Le premier room est à l'index 0
+        var firstRoom = roomList[0];
+    
+        // Instanciation du joueur dans le premier room
+        Vector3 playerPosition = new Vector3(
+            Random.Range(firstRoom.min.x + 2, firstRoom.max.x - 2),
+            Random.Range(firstRoom.min.y + 2, firstRoom.max.y - 2),
+            0
+        );
+        playerInstance = Instantiate(playerPrefab, playerPosition, Quaternion.identity);
+    
+        // Trouver le room le plus éloigné du joueur
+        var lastRoom = roomList[0];
+        float maxDistance = 0;
+        foreach (var room in roomList)
+        {
+            Vector3 roomCenter = new Vector3(
+                (room.min.x + room.max.x) / 2,
+                (room.min.y + room.max.y) / 2,
+                0
+            );
+            float distance = Vector3.Distance(playerPosition, roomCenter);
+            if (distance > maxDistance)
+            {
+                maxDistance = distance;
+                lastRoom = room;
+            }
+        }
+    
+        // Instanciation du boss dans le room le plus éloigné
+        Vector3 bossPosition = new Vector3(
+            Random.Range(lastRoom.min.x + 2, lastRoom.max.x - 2),
+            Random.Range(lastRoom.min.y + 2, lastRoom.max.y - 2),
+            0
+        );
+        bossInstance = Instantiate(bossPrefab, bossPosition, Quaternion.identity);
+    }
     private HashSet<Vector2Int> IncreaseCorridorSize(HashSet<Vector2Int> corridors)
     {
         HashSet<Vector2Int> enlargedCorridors = new HashSet<Vector2Int>();
@@ -158,8 +217,8 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
         for (int i = 0; i < numberOfEnemies; i++)
         {
             // Générer une position aléatoire à l'intérieur de la pièce en tenant compte des marges de 3
-            float randomX = Random.Range(roomBounds.min.x+5, roomBounds.max.x-5);
-            float randomY = Random.Range(roomBounds.min.y+5, roomBounds.max.y-5);
+            float randomX = Random.Range(roomBounds.min.x + 5, roomBounds.max.x - 5);
+            float randomY = Random.Range(roomBounds.min.y + 5, roomBounds.max.y - 5);
             Vector3 enemyPosition = new Vector3(randomX, randomY, 0);
 
             // Instancier un ennemi à la position aléatoire
@@ -178,7 +237,7 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
             }
         }
         enemyInstances.Clear(); // Vider la liste après suppression
-                foreach (var coins in coinsInstances)
+        foreach (var coins in coinsInstances)
         {
             if (coins != null)
             {
@@ -186,18 +245,20 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
             }
         }
     }
-        private void InstantiateRandomCoinsInRoom(BoundsInt roomBounds)
+    private void InstantiateRandomCoinsInRoom(BoundsInt roomBounds)
     {
         int numberOfEnemies = Random.Range(1, 7); // Générer un nombre aléatoire d'ennemis entre 1 et 5
         for (int i = 0; i < numberOfEnemies; i++)
         {
             // Générer une position aléatoire à l'intérieur de la pièce en tenant compte des marges de 3
-            float randomX = Random.Range(roomBounds.min.x + 3, roomBounds.max.x - 3);
-            float randomY = Random.Range(roomBounds.min.y + 3, roomBounds.max.y - 3);
+            float randomX = Random.Range(roomBounds.min.x + 4, roomBounds.max.x - 4);
+            float randomY = Random.Range(roomBounds.min.y + 4, roomBounds.max.y - 4);
             Vector3 coinsPosition = new Vector3(randomX, randomY, 0);
             // Instancier un ennemi à la position aléatoire
             GameObject coinsInstance = Instantiate(coinsPrefab, coinsPosition, Quaternion.identity);
-           coinsInstances.Add(coinsInstance); // Ajouter la référence à la liste des instances
+            coinsInstances.Add(coinsInstance); // Ajouter la référence à la liste des instances
         }
+
+
     }
 }
