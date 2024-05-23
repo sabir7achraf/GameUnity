@@ -11,10 +11,15 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 input;
     private float speed;
+    Vector2 position;
 
     public int maxHealth = 5;
     public int health { get { return currentHealth; } }
     int currentHealth;
+
+    public GameObject projectilePrefab;
+    Rigidbody2D rigidbody2d;
+    public InputAction launchAction;
 
     void Start()
     {
@@ -22,8 +27,10 @@ public class PlayerController : MonoBehaviour
         {
             animator = GetComponent<Animator>(); // Obtenir l'Animator s'il n'est pas assigné
         }
-        
-        currentHealth = maxHealth/2; // Initialiser la santé actuelle à la santé maximale
+
+        rigidbody2d = GetComponent<Rigidbody2D>(); // Initialize the Rigidbody2D
+
+        currentHealth = maxHealth / 2; // Initialiser la santé actuelle à la santé maximale
 
         // Mettre à jour l'interface utilisateur au début du jeu
         if (uiHandler != null)
@@ -67,7 +74,7 @@ public class PlayerController : MonoBehaviour
         input = new Vector2(horizontal, vertical);
         speed = input.magnitude;
 
-        Vector2 position = transform.position;
+        position = transform.position;
         position.x += moveSpeed * horizontal;
         position.y += moveSpeed * vertical;
         transform.position = position;
@@ -75,35 +82,21 @@ public class PlayerController : MonoBehaviour
 
     void HandleAnimation()
     {
-      
         animator.SetFloat("Look X", input.x);
         animator.SetFloat("Look Y", input.y);
-
-   
         animator.SetFloat("Speed", speed);
 
-        
-        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+        if (Input.GetKeyDown(KeyCode.C))
         {
-            animator.SetTrigger("Hit");
-        }
-
-       
-        if (Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            animator.SetTrigger("Launch");
+            Launch();
         }
     }
 
     public void ChangeHealth(int amount)
     {
-        
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
-        
-        
         Debug.Log(currentHealth + "/" + maxHealth);
-        
-      
+
         if (uiHandler != null)
         {
             uiHandler.SetHealthValue((float)currentHealth / maxHealth);
@@ -113,13 +106,22 @@ public class PlayerController : MonoBehaviour
             Debug.LogError("UIHandler not assigned in the inspector.");
         }
 
-       
         if (currentHealth <= 0)
         {
-            
             animator.SetTrigger("Die");
-
-     
         }
+    }
+
+    void Launch()
+    {
+        GameObject projectileObject = Instantiate(projectilePrefab, rigidbody2d.position + Vector2.up * 0.5f, Quaternion.identity);
+        Projectile projectile = projectileObject.GetComponent<Projectile>();
+        Vector2 launchDirection = input.normalized; // Use normalized input for direction
+        if (launchDirection == Vector2.zero)
+        {
+            launchDirection = Vector2.up; // Default direction if no input
+        }
+        projectile.Launch(launchDirection, 300);
+        animator.SetTrigger("Launch");
     }
 }
