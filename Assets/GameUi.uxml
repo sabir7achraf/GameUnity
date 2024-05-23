@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="HealthBarBackground" style="flex-grow: 0; background-image: url(&apos;project://database/Assets/Ruby/UI/UIHealthFrame.png?fileID=21300000&amp;guid=e04807cd45105ec409b00463fe6ab7b1&amp;type=3#UIHealthFrame&apos;); width: 430px; height: 109px;">
+        <ui:VisualElement name="charachter" style="flex-grow: 0; background-image: url(&apos;project://database/Assets/2DBeginnerTutorialResources/Art/Sprites/UI/CharacterPortrait.png?fileID=2800000&amp;guid=e15de6f8d935253448ee4e7709bd216c&amp;type=3#CharacterPortrait&apos;); width: 184px; height: 94px; align-items: auto; justify-content: space-between; align-self: stretch; flex-direction: column;" />
+        <ui:VisualElement name="HealtBarContainer" style="flex-grow: 1; position: absolute;">
+            <ui:VisualElement name="HealtBar" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/2DBeginnerTutorialResources/Art/Sprites/UI/UIHealthBar.png?fileID=2800000&amp;guid=06131b9172a2c144fbb98dd9cb53e741&amp;type=3#UIHealthBar&apos;); height: 32px; width: 240px; flex-direction: column-reverse; align-self: stretch; justify-content: center; align-items: auto; -unity-background-scale-mode: stretch-to-fill; position: absolute; top: 36px; left: 177px; -unity-background-image-tint-color: rgb(128, 128, 251);" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
