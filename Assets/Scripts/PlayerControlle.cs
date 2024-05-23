@@ -7,12 +7,13 @@ public class PlayerController : MonoBehaviour
 {
     public Animator animator; // Référence à l'Animator
     public float moveSpeed = 0.05f; // Vitesse de déplacement configurable
+    public UIHandler uiHandler; // Référence à UIHandler
 
     private Vector2 input;
     private float speed;
 
     public int maxHealth = 5;
-    public int health { get { return currentHealth; }}
+    public int health { get { return currentHealth; } }
     int currentHealth;
 
     void Start()
@@ -20,6 +21,18 @@ public class PlayerController : MonoBehaviour
         if (animator == null)
         {
             animator = GetComponent<Animator>(); // Obtenir l'Animator s'il n'est pas assigné
+        }
+        
+        currentHealth = maxHealth/2; // Initialiser la santé actuelle à la santé maximale
+
+        // Mettre à jour l'interface utilisateur au début du jeu
+        if (uiHandler != null)
+        {
+            uiHandler.SetHealthValue((float)currentHealth / maxHealth);
+        }
+        else
+        {
+            Debug.LogError("UIHandler not assigned in the inspector.");
         }
     }
 
@@ -62,20 +75,20 @@ public class PlayerController : MonoBehaviour
 
     void HandleAnimation()
     {
-        // Met à jour les variables du blend tree
+      
         animator.SetFloat("Look X", input.x);
         animator.SetFloat("Look Y", input.y);
 
-        // Met à jour la vitesse de déplacement
+   
         animator.SetFloat("Speed", speed);
 
-        // Handle Hit Trigger
+        
         if (Keyboard.current.spaceKey.wasPressedThisFrame)
         {
             animator.SetTrigger("Hit");
         }
 
-        // Handle Launch Trigger
+       
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             animator.SetTrigger("Launch");
@@ -84,23 +97,29 @@ public class PlayerController : MonoBehaviour
 
     public void ChangeHealth(int amount)
     {
-        // Changer la santé actuelle en ajoutant le montant et en la limitant entre 0 et maxHealth
+        
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         
-        // Afficher la nouvelle valeur de la santé dans la console pour le débogage
+        
         Debug.Log(currentHealth + "/" + maxHealth);
         
-        // Si la santé atteint 0, déclencher des actions supplémentaires (par exemple, la mort du joueur)
+      
+        if (uiHandler != null)
+        {
+            uiHandler.SetHealthValue((float)currentHealth / maxHealth);
+        }
+        else
+        {
+            Debug.LogError("UIHandler not assigned in the inspector.");
+        }
+
+       
         if (currentHealth <= 0)
         {
-            // Par exemple, jouer une animation de mort
+            
             animator.SetTrigger("Die");
 
-            // Autres actions possibles :
-            // - Désactiver les contrôles du joueur
-            // - Afficher un écran de game over
-            // - Réinitialiser le niveau
-            // - Etc.
+     
         }
     }
 }
