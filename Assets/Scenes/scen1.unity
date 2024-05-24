@@ -792,7 +792,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5206682490053565102, guid: 76979166c6612314e954c6010d9fed3b, type: 3}
       propertyPath: m_IsTrigger
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6493180450188393288, guid: 76979166c6612314e954c6010d9fed3b, type: 3}
       propertyPath: vertical
@@ -1392,7 +1392,7 @@ GameObject:
   - component: {fileID: 1533955636}
   m_Layer: 3
   m_Name: wall
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7552,7 +7552,7 @@ TilemapCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -22075,11 +22075,11 @@ PrefabInstance:
       objectReference: {fileID: 1193471544}
     - target: {fileID: 4031634719623107516, guid: 03d61bffd23159046964b1c24b3ce431, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 55.89
+      value: 58.42
       objectReference: {fileID: 0}
     - target: {fileID: 4031634719623107516, guid: 03d61bffd23159046964b1c24b3ce431, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 14.14
+      value: 12.56
       objectReference: {fileID: 0}
     - target: {fileID: 4031634719623107516, guid: 03d61bffd23159046964b1c24b3ce431, type: 3}
       propertyPath: m_LocalPosition.z
@@ -22111,6 +22111,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4031634719623107516, guid: 03d61bffd23159046964b1c24b3ce431, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6411547789559114769, guid: 03d61bffd23159046964b1c24b3ce431, type: 3}
+      propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7114809148083041023, guid: 03d61bffd23159046964b1c24b3ce431, type: 3}

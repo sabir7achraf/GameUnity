@@ -16,6 +16,8 @@ public class EnemyController : MonoBehaviour
    float timer;
    int direction = 1;
 
+   bool aggressive = true;
+
    // Start is called before the first frame update
    void Start()
    {
@@ -74,4 +76,22 @@ public class EnemyController : MonoBehaviour
        Collider2D hitCollider = Physics2D.OverlapCircle(position, 0.1f, unwalkableMask); // Utilisation d'un petit rayon pour vérifier une zone ponctuelle
        return hitCollider == null;
    }
+
+      public void Fix()
+   {
+       aggressive = false;
+       GetComponent<Rigidbody2D>().simulated = false;
+       Destroy(gameObject);
+   }
+      void OnCollisionEnter2D(Collision2D other)
+   {
+       PlayerController player = other.gameObject.GetComponent<PlayerController>();
+
+
+       if (player != null)
+       {
+           player.ChangeHealth(-1);
+       }
+   }
+   
 }

@@ -21,23 +21,32 @@ public class Projectile : MonoBehaviour
            Destroy(gameObject);
        }
    }
-
-
    public void Launch(Vector2 direction, float force)
   {
        rigidbody2d.AddForce(direction * force);
   }
 
-//    void OnCollisionEnter2D(Collision2D other)
-//   {
-//        EnemyController enemy = other.collider.GetComponent<EnemyController>();
-//        if (enemy != null)
-//            {
-//                enemy.Fix();
-//            }
+      void OnCollisionWall(Collision2D collision)
+    {
+        // Check if the collision object is a wall
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            Destroy(gameObject);
+        }
+    }
 
-//        Destroy(gameObject);
-//   }
+   void OnCollisionEnter2D(Collision2D other)
+  {
+       EnemyController enemy = other.collider.GetComponent<EnemyController>();
+       if (enemy != null)
+           {
+               enemy.Fix();
+               
+               
+           }
+           Destroy(gameObject);
+
+  }
 
 
 }
