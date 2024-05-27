@@ -30,6 +30,8 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
 
     private List<BoundsInt> roomList; // Liste des rooms
     private GameObject playerInstance; // Instance de joueur
+     [SerializeField]
+    private CameraFollow cameraFollow; // Référence au script CameraFollow
     private GameObject bossInstance; // Instance de boss
 
 
@@ -85,6 +87,11 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
             0
         );
         playerInstance = Instantiate(playerPrefab, playerPosition, Quaternion.identity);
+          // camearFollowPlayer      
+                if (cameraFollow != null)
+        {
+            cameraFollow.SetPlayer(playerInstance.transform);
+        }
     
         // Trouver le room le plus éloigné du joueur
         var lastRoom = roomList[0];
