@@ -108,7 +108,8 @@ public class PlayerController : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            animator.SetTrigger("Die");
+            uiHandler.ShowGameOver(); // Afficher l'UI de Game Over
+            Destroy(gameObject);
         }
     }
 
