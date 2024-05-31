@@ -10,19 +10,24 @@ public class UIHandler : MonoBehaviour
 {
     private VisualElement m_Healthbar;
     public GameObject GameOver;
+    public GameObject PlayBar;
     public UnityEngine.UI.Button retryButton; 
     public UnityEngine.UI.Button quitButton; 
+    public UnityEngine.UI.Button playButton; 
+
      private RoomFirstDungeonGenerator dungeonGenerator;
 
 
    // Start is called before the first frame update
    void Start()
    {
+        PlayBar.SetActive(true);
          dungeonGenerator = FindObjectOfType<RoomFirstDungeonGenerator>();
        UIDocument uiDocument = GetComponent<UIDocument>();
        m_Healthbar = uiDocument.rootVisualElement.Q<VisualElement>("HealtBar");
        SetHealthValue(1.0f);
         retryButton.onClick.AddListener(OnRetryButton);
+        playButton.onClick.AddListener(OnplayButton);
         quitButton.onClick.AddListener(OnQuitButton);
    }
 
@@ -49,5 +54,9 @@ public class UIHandler : MonoBehaviour
    public void SetHealthValue(float percentage)
    {
        m_Healthbar.style.width = Length.Percent(100 * percentage);
+   }
+   public void OnplayButton(){
+    dungeonGenerator.ReplayDungeon();
+    PlayBar.SetActive(false);
    }
 }

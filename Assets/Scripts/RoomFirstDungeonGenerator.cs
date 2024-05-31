@@ -21,26 +21,20 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
     private List<GameObject> enemyInstances = new List<GameObject>();
     private List<GameObject> coinsInstances = new List<GameObject>();
 
-    //variables pour joueur et le Boss
-
+    // Variables pour joueur et le Boss
     [SerializeField]
-    private GameObject playerPrefab; // Préfabriqué de joueur
+    private Transform player; // Référence à l'objet du joueur dans la hiérarchie
     [SerializeField]
-    private GameObject bossPrefab; // Préfabriqué de boss
+    private Transform boss;   // Référence à l'objet du boss dans la hiérarchie
+    [SerializeField]
+    private CameraFollow cameraFollow; // Référence au script CameraFollow
 
     private List<BoundsInt> roomList; // Liste des rooms
-    private GameObject playerInstance; // Instance de joueur
-     [SerializeField]
-    private CameraFollow cameraFollow; // Référence au script CameraFollow
-    private GameObject bossInstance; // Instance de boss
-
 
     protected override void RunProceduralGeneration()
     {
-        
         CreateRooms();
-        InstantiatePlayerAndBoss();
-
+        PlacePlayerAndBoss();
     }
     
     private void CreateRooms()
@@ -70,7 +64,7 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
         WallGenerator.CreateWalls(floor, tilemapVisualizer);
     }
 
-        private void InstantiatePlayerAndBoss()
+    private void PlacePlayerAndBoss()
     {
         if (roomList == null || roomList.Count == 0)
         {
@@ -78,23 +72,21 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
             return;
         }
 
-        DestroyPlayerAndbossInstance();
-    
         // Le premier room est à l'index 0
         var firstRoom = roomList[0];
     
-        // Instanciation du joueur dans le premier room
+        // Déplacement du joueur dans le premier room
         Vector3 playerPosition = new Vector3(
             Random.Range(firstRoom.min.x + 2, firstRoom.max.x - 2),
             Random.Range(firstRoom.min.y + 2, firstRoom.max.y - 2),
             0
         );
-        playerInstance = Instantiate(playerPrefab, playerPosition, Quaternion.identity);
-        
+        player.position = playerPosition;
+
         // cameraFollowPlayer
         if (cameraFollow != null)
         {
-            cameraFollow.SetPlayer(playerInstance.transform);
+            cameraFollow.SetPlayer(player);
         }
     
         // Trouver le room le plus éloigné du joueur
@@ -115,27 +107,15 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
             }
         }
     
-        // Instanciation du boss dans le room le plus éloigné
+        // Déplacement du boss dans le room le plus éloigné
         Vector3 bossPosition = new Vector3(
             Random.Range(lastRoom.min.x + 2, lastRoom.max.x - 2),
             Random.Range(lastRoom.min.y + 2, lastRoom.max.y - 2),
             0
         );
-        bossInstance = Instantiate(bossPrefab, bossPosition, Quaternion.identity);
+        boss.position = bossPosition;
     }
-      private void DestroyPlayerAndbossInstance()
-    {
-        if (playerInstance != null)
-        {
-            Destroy(playerInstance);
-            playerInstance = null;
-        }
-               if (bossInstance != null)
-        {
-            Destroy(bossInstance);
-            bossInstance = null;
-        }
-    }
+
     private HashSet<Vector2Int> IncreaseCorridorSize(HashSet<Vector2Int> corridors)
     {
         HashSet<Vector2Int> enlargedCorridors = new HashSet<Vector2Int>();
@@ -249,22 +229,23 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
         }
     }
 
-
     private void InstantiateRandomCoinsInRoom(BoundsInt roomBounds)
     {
-        int numberOfEnemies = Random.Range(1, 7); // Générer un nombre aléatoire d'ennemis entre 1 et 5
-        for (int i = 0; i < numberOfEnemies; i++)
+        int numberOfCoins = Random.Range(1, 7); // Générer un nombre aléatoire de pièces entre 1 et 6
+        for (int i = 0; i < numberOfCoins; i++)
         {
-            // Générer une position aléatoire à l'intérieur de la pièce en tenant compte des marges de 3
+            // Générer une position aléatoire à l'intérieur de la pièce en tenant compte des marges de 4
             float randomX = Random.Range(roomBounds.min.x + 4, roomBounds.max.x - 4);
             float randomY = Random.Range(roomBounds.min.y + 4, roomBounds.max.y - 4);
             Vector3 coinsPosition = new Vector3(randomX, randomY, 0);
-            // Instancier un ennemi à la position aléatoire
+
+            // Instancier une pièce à la position aléatoire
             GameObject coinsInstance = Instantiate(coinsPrefab, coinsPosition, Quaternion.identity);
             coinsInstances.Add(coinsInstance); // Ajouter la référence à la liste des instances
         }
     }
-        public void DestroyAllEnemiesAndCoins() 
+
+    public void DestroyAllEnemiesAndCoins()
     {
         foreach (var enemy in enemyInstances)
         {
@@ -281,15 +262,14 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
                 Destroy(coins);
             }
         }
-         coinsInstances.Clear();
+        coinsInstances.Clear(); // Vider la liste après suppression
     }
 
-        public void ReplayDungeon()
+    public void ReplayDungeon()
     {
-        DestroyPlayerAndbossInstance();
         DestroyAllEnemiesAndCoins();
         tilemapVisualizer.clear();
         RunProceduralGeneration();
-        Debug.Log("hi");
+        Debug.Log("Dungeon replayed");
     }
 }

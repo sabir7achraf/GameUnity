@@ -111,9 +111,6 @@ public class PlayerController : MonoBehaviour
         {
             
             uiHandler.ShowGameOver(); // Afficher l'UI de Game Over
-            Destroy(gameObject);
-            i+=1;
-            Debug.Log("player destroyed "+i);
         }
     }
 
