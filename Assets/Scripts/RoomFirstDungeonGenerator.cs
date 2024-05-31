@@ -37,6 +37,7 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
 
     protected override void RunProceduralGeneration()
     {
+        
         CreateRooms();
         InstantiatePlayerAndBoss();
 
@@ -69,13 +70,15 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
         WallGenerator.CreateWalls(floor, tilemapVisualizer);
     }
 
-    private void InstantiatePlayerAndBoss()
+        private void InstantiatePlayerAndBoss()
     {
         if (roomList == null || roomList.Count == 0)
         {
             Debug.LogError("roomList is null or empty");
             return;
         }
+
+        DestroyPlayerAndbossInstance();
     
         // Le premier room est à l'index 0
         var firstRoom = roomList[0];
@@ -87,8 +90,9 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
             0
         );
         playerInstance = Instantiate(playerPrefab, playerPosition, Quaternion.identity);
-          // camearFollowPlayer      
-                if (cameraFollow != null)
+        
+        // cameraFollowPlayer
+        if (cameraFollow != null)
         {
             cameraFollow.SetPlayer(playerInstance.transform);
         }
@@ -118,6 +122,19 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
             0
         );
         bossInstance = Instantiate(bossPrefab, bossPosition, Quaternion.identity);
+    }
+      private void DestroyPlayerAndbossInstance()
+    {
+        if (playerInstance != null)
+        {
+            Destroy(playerInstance);
+            playerInstance = null;
+        }
+               if (bossInstance != null)
+        {
+            Destroy(bossInstance);
+            bossInstance = null;
+        }
     }
     private HashSet<Vector2Int> IncreaseCorridorSize(HashSet<Vector2Int> corridors)
     {
@@ -181,10 +198,8 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
             }
             corridor.Add(position);
         }
-
         return corridor;
     }
-
     private Vector2Int FindClosestPoint(Vector2Int currentRoomCenter, List<Vector2Int> roomCenters)
     {
         Vector2Int closest = Vector2Int.zero;
@@ -234,24 +249,7 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
         }
     }
 
-    public void DestroyAllEnemiesAndCoins()
-    {
-        foreach (var enemy in enemyInstances)
-        {
-            if (enemy != null)
-            {
-                DestroyImmediate(enemy);
-            }
-        }
-        enemyInstances.Clear(); // Vider la liste après suppression
-        foreach (var coins in coinsInstances)
-        {
-            if (coins != null)
-            {
-                DestroyImmediate(coins);
-            }
-        }
-    }
+
     private void InstantiateRandomCoinsInRoom(BoundsInt roomBounds)
     {
         int numberOfEnemies = Random.Range(1, 7); // Générer un nombre aléatoire d'ennemis entre 1 et 5
@@ -265,7 +263,33 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
             GameObject coinsInstance = Instantiate(coinsPrefab, coinsPosition, Quaternion.identity);
             coinsInstances.Add(coinsInstance); // Ajouter la référence à la liste des instances
         }
+    }
+        public void DestroyAllEnemiesAndCoins() 
+    {
+        foreach (var enemy in enemyInstances)
+        {
+            if (enemy != null)
+            {
+                Destroy(enemy);
+            }
+        }
+        enemyInstances.Clear(); // Vider la liste après suppression
+        foreach (var coins in coinsInstances)
+        {
+            if (coins != null)
+            {
+                Destroy(coins);
+            }
+        }
+         coinsInstances.Clear();
+    }
 
-
+        public void ReplayDungeon()
+    {
+        DestroyPlayerAndbossInstance();
+        DestroyAllEnemiesAndCoins();
+        tilemapVisualizer.clear();
+        RunProceduralGeneration();
+        Debug.Log("hi");
     }
 }

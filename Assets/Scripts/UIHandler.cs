@@ -12,12 +12,13 @@ public class UIHandler : MonoBehaviour
     public GameObject GameOver;
     public UnityEngine.UI.Button retryButton; 
     public UnityEngine.UI.Button quitButton; 
+     private RoomFirstDungeonGenerator dungeonGenerator;
 
 
    // Start is called before the first frame update
    void Start()
    {
-        GameOver.SetActive(false);
+         dungeonGenerator = FindObjectOfType<RoomFirstDungeonGenerator>();
        UIDocument uiDocument = GetComponent<UIDocument>();
        m_Healthbar = uiDocument.rootVisualElement.Q<VisualElement>("HealtBar");
        SetHealthValue(1.0f);
@@ -32,7 +33,11 @@ public class UIHandler : MonoBehaviour
 
     public void OnRetryButton()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Recharger la scène actuelle
+        // Appelle la méthode pour relancer la génération de la carte
+        dungeonGenerator.ReplayDungeon();
+
+        // Cachez le bouton après avoir cliqué dessus
+        GameOver.SetActive(false);
     }
 
     public void OnQuitButton()
@@ -45,6 +50,4 @@ public class UIHandler : MonoBehaviour
    {
        m_Healthbar.style.width = Length.Percent(100 * percentage);
    }
-
-
 }

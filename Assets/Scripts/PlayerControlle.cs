@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     public Animator animator; // Référence à l'Animator
     public float moveSpeed = 0.05f; // Vitesse de déplacement configurable
     public UIHandler uiHandler; // Référence à UIHandler
+    int i=0;
 
     private Vector2 input;
     private float speed;
@@ -95,7 +96,7 @@ public class PlayerController : MonoBehaviour
     public void ChangeHealth(int amount)
     {
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
-        Debug.Log(currentHealth + "/" + maxHealth);
+       
 
         if (uiHandler != null)
         {
@@ -108,8 +109,11 @@ public class PlayerController : MonoBehaviour
 
         if (currentHealth <= 0)
         {
+            
             uiHandler.ShowGameOver(); // Afficher l'UI de Game Over
             Destroy(gameObject);
+            i+=1;
+            Debug.Log("player destroyed "+i);
         }
     }
 
