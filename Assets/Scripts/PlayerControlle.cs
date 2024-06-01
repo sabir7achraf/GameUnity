@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     public Animator animator; // Référence à l'Animator
     public float moveSpeed = 0.05f; // Vitesse de déplacement configurable
-    public UIHandler uiHandler; // Référence à UIHandler
+     public UIHandler uiHandler; // Référence à UIHandler
     int i=0;
 
     private Vector2 input;
@@ -33,14 +33,14 @@ public class PlayerController : MonoBehaviour
 
         currentHealth = maxHealth / 2; // Initialiser la santé actuelle à la santé maximale
 
-        // Mettre à jour l'interface utilisateur au début du jeu
-        if (uiHandler != null)
-        {
+        //  Mettre à jour l'interface utilisateur au début du jeu
+         if (uiHandler != null)
+         {
             uiHandler.SetHealthValue((float)currentHealth / maxHealth);
-        }
-        else
-        {
-            Debug.LogError("UIHandler not assigned in the inspector.");
+         }
+         else
+         {
+             Debug.LogError("UIHandler not assigned in the inspector.");
         }
     }
 
@@ -98,20 +98,20 @@ public class PlayerController : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
        
 
-        if (uiHandler != null)
-        {
-            uiHandler.SetHealthValue((float)currentHealth / maxHealth);
-        }
-        else
-        {
-            Debug.LogError("UIHandler not assigned in the inspector.");
-        }
+         if (uiHandler != null)
+     {
+             uiHandler.SetHealthValue((float)currentHealth / maxHealth);
+         }
+         else
+         {
+             Debug.LogError("UIHandler not assigned in the inspector.");
+         }
 
-        if (currentHealth <= 0)
-        {
+         if (currentHealth <= 0)
+         {
             
             uiHandler.ShowGameOver(); // Afficher l'UI de Game Over
-        }
+         }
     }
 
     void Launch()

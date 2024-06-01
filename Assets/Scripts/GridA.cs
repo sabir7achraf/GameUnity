@@ -9,21 +9,19 @@ public class GridA : MonoBehaviour
     public float nodeRadius;
     Node[,] grid;
 
-    static private List<Vector3> gridPos;
+    public List<Node> path;  // Ajout de la liste de chemin
 
+    static private List<Vector3> gridPos;
 
     float nodeDiameter;
     int gridSizeX, gridSizeY;
 
-
-    
     void Start()
     {
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
         CreateGrid();
-
     }
 
     void CreateGrid()
@@ -76,23 +74,36 @@ public class GridA : MonoBehaviour
         return grid[x, y];
     }
 
-    public List<Node> path;
+    public void SetPath(List<Node> newPath)
+    {
+        path = newPath;
+    }
+
     void OnDrawGizmos()
     {
+        Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, gridWorldSize.y, 1));
+
+        if (grid != null)
+        {
+            foreach (Node n in grid)
+            {
+                Gizmos.color = (n.walkable) ? Color.white : Color.red;
+                Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
+            }
+        }
+
         if (path != null)
         {
             foreach (Node n in path)
             {
                 Gizmos.color = Color.green;
-                Gizmos.DrawCube((Vector3)n.worldPosition, Vector3.one * (nodeDiameter - .1f));
+                Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
             }
         }
-
-
     }
-        public Vector3 WorldPointFromNode(Node node)
+
+    public Vector3 WorldPointFromNode(Node node)
     {
         return node.worldPosition;
     }
-
 }

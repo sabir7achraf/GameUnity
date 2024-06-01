@@ -17,16 +17,26 @@ public class DijkstraPathfinding : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            List<Vector3> path = DjikstraFindPath(player.position, boss.position);
+            List<Node> path = DjikstraFindPath(player.position, boss.position);
             if (path != null)
             {
-                // Faites quelque chose avec le chemin, par exemple passer à un autre script.
-                FindObjectOfType<FollowDjikstra>().SetPath(path);
+                // Mettez à jour le chemin dans la grille
+                grid.SetPath(path);
+
+                // Convertir le chemin en une liste de Vector3 pour le script FollowDjikstra
+                List<Vector3> waypoints = new List<Vector3>();
+                foreach (Node node in path)
+                {
+                    waypoints.Add(grid.WorldPointFromNode(node));
+                }
+
+                // Passez le chemin trouvé au script FollowDjikstra
+                FindObjectOfType<FollowDjikstra>().SetPath(waypoints);
             }
         }
     }
 
-    List<Vector3> DjikstraFindPath(Vector3 startPos, Vector3 targetPos)
+    List<Node> DjikstraFindPath(Vector3 startPos, Vector3 targetPos)
     {
         Node startNode = grid.NodeFromWorldPoint(startPos);
         Node targetNode = grid.NodeFromWorldPoint(targetPos);
@@ -80,7 +90,7 @@ public class DijkstraPathfinding : MonoBehaviour
         return null; // Aucun chemin trouvé
     }
 
-    List<Vector3> RetracePath(Node startNode, Node endNode)
+    List<Node> RetracePath(Node startNode, Node endNode)
     {
         List<Node> path = new List<Node>();
         Node currentNode = endNode;
@@ -92,13 +102,7 @@ public class DijkstraPathfinding : MonoBehaviour
         }
         path.Reverse();
 
-        List<Vector3> waypoints = new List<Vector3>();
-        foreach (Node node in path)
-        {
-            waypoints.Add(grid.WorldPointFromNode(node));
-        }
-
-        return waypoints;
+        return path;
     }
 
     int GetDistance(Node nodeA, Node nodeB)

@@ -1689,6 +1689,7 @@ MonoBehaviour:
   retryButton: {fileID: 47330893}
   quitButton: {fileID: 338211589}
   playButton: {fileID: 1081202467}
+  dungeonGenerator: {fileID: 0}
 --- !u!1 &1244189604 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7134086818806163417, guid: 2ad06355faac5664a9ee56412b4b2ee8, type: 3}
@@ -1720,7 +1721,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1302236474}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 797608072f2f07742bd0983d5c41a071, type: 3}
   m_Name: 
@@ -1729,7 +1730,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   gridWorldSize: {x: 80, y: 80}
-  nodeRadius: 0.19
+  nodeRadius: 0.1
 --- !u!4 &1302236476
 Transform:
   m_ObjectHideFlags: 0
@@ -1739,7 +1740,7 @@ Transform:
   m_GameObject: {fileID: 1302236474}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.9, y: 2.88, z: 0}
+  m_LocalPosition: {x: 0.1, y: -0.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1905,7 +1906,7 @@ Transform:
   m_GameObject: {fileID: 1311583569}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 32.1, y: 30.2, z: -10}
+  m_LocalPosition: {x: 61.7, y: 13.6, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -27773,6 +27774,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2822297209900426484, guid: 03d61bffd23159046964b1c24b3ce431, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822297209900426484, guid: 03d61bffd23159046964b1c24b3ce431, type: 3}
       propertyPath: uiHandler
       value: 
       objectReference: {fileID: 1193471544}
@@ -27782,11 +27787,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4031634719623107516, guid: 03d61bffd23159046964b1c24b3ce431, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4031634719623107516, guid: 03d61bffd23159046964b1c24b3ce431, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 65
+      value: 63.2
       objectReference: {fileID: 0}
     - target: {fileID: 4031634719623107516, guid: 03d61bffd23159046964b1c24b3ce431, type: 3}
       propertyPath: m_LocalPosition.z
@@ -27850,7 +27855,7 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: b77822e0485373d40b5beb92e9a5e728, type: 2}
     - target: {fileID: 8904327696588661665, guid: 03d61bffd23159046964b1c24b3ce431, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -5,12 +5,12 @@ public class Pathfinding : MonoBehaviour
 {
     public Transform seeker, target;
     private GridA grid;
-    private FollowPathAstar pathFollower;  // Référence au script de suivi du chemin
+    private FollowPathAstar pathFollower;
 
     void Awake()
     {
         grid = GetComponent<GridA>();
-        pathFollower = seeker.GetComponent<FollowPathAstar>();  // Assurez-vous que le joueur a un script PathFollower
+        pathFollower = seeker.GetComponent<FollowPathAstar>();
     }
 
     void Update()
@@ -27,6 +27,7 @@ public class Pathfinding : MonoBehaviour
         }
 
         List<Node> path = FindPath(startPos, targetPos);
+        grid.SetPath(path);  // Mettre à jour la grille avec le chemin trouvé
         pathFollower.StartPath(path);  // Démarrer le suivi du chemin
     }
 
