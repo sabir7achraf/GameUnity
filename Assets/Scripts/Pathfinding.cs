@@ -5,12 +5,12 @@ public class Pathfinding : MonoBehaviour
 {
     public Transform seeker, target;
     private GridA grid;
-    private FollowPathAstar pathFollower;
+    private FollowpathAstar pathFollower;
 
     void Awake()
     {
         grid = GetComponent<GridA>();
-        pathFollower = seeker.GetComponent<FollowPathAstar>();
+        pathFollower = seeker.GetComponent<FollowpathAstar>();
     }
 
     void Update()

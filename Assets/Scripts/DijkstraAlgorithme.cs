@@ -15,8 +15,7 @@ public class DijkstraPathfinding : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
+      
             List<Node> path = DjikstraFindPath(player.position, boss.position);
             if (path != null)
             {
@@ -33,7 +32,7 @@ public class DijkstraPathfinding : MonoBehaviour
                 // Passez le chemin trouvé au script FollowDjikstra
                 FindObjectOfType<FollowDjikstra>().SetPath(waypoints);
             }
-        }
+        
     }
 
     List<Node> DjikstraFindPath(Vector3 startPos, Vector3 targetPos)

@@ -14,6 +14,7 @@ public  abstract class abstractDungeonGenerator : MonoBehaviour
        tilemapVisualizer.clear();
        RunProceduralGeneration();
      }
+     
  protected abstract void RunProceduralGeneration();
  
 }

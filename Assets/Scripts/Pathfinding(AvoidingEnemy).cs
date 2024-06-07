@@ -6,14 +6,14 @@ public class PathFinding : MonoBehaviour
 {
     public Transform seeker, target;
     private Grida grid;
-    private FollowPathAstar pathFollower;  // Référence au script de suivi du chemin
+    private FollowpathAstar pathFollower;  // Référence au script de suivi du chemin
     public float enemyAvoidanceRadius = 1.5f;  // Ajuster le rayon pour éviter les ennemis
     public int enemyProximityPenalty = 10;  // Pénalité pour les nœuds à proximité des ennemis
     public int unwalkableProximityPenalty = 5;  // Pénalité pour les nœuds à proximité des nœuds non praticables
     void Awake()
     {
         grid = GetComponent<Grida>();
-        pathFollower = seeker.GetComponent<FollowPathAstar>();  // Assurez-vous que le joueur a un script PathFollower
+        pathFollower = seeker.GetComponent<FollowpathAstar>();  // Assurez-vous que le joueur a un script PathFollower
     }
 
     void Update()

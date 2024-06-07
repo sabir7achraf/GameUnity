@@ -104,7 +104,7 @@ public class PlayerController : MonoBehaviour
          }
          else
          {
-             Debug.LogError("UIHandler not assigned in the inspector.");
+        
          }
 
          if (currentHealth <= 0)
