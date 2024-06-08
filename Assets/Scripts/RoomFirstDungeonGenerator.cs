@@ -30,6 +30,7 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
     private CameraFollow cameraFollow; // Référence au script CameraFollow
 
     private List<BoundsInt> roomList; // Liste des rooms
+    
 
     protected override void RunProceduralGeneration()
     {
@@ -215,7 +216,7 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
 
     private void InstantiateRandomEnemiesInRoom(BoundsInt roomBounds)
     {
-        int numberOfEnemies = Random.Range(1, 6); // Générer un nombre aléatoire d'ennemis entre 1 et 5
+        int numberOfEnemies = Random.Range(1, 3); // Générer un nombre aléatoire d'ennemis entre 1 et 5
         for (int i = 0; i < numberOfEnemies; i++)
         {
             // Générer une position aléatoire à l'intérieur de la pièce en tenant compte des marges de 3
@@ -231,7 +232,7 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
 
     private void InstantiateRandomCoinsInRoom(BoundsInt roomBounds)
     {
-        int numberOfCoins = Random.Range(1, 7); // Générer un nombre aléatoire de pièces entre 1 et 6
+        int numberOfCoins = Random.Range(1, 4); // Générer un nombre aléatoire de pièces entre 1 et 6
         for (int i = 0; i < numberOfCoins; i++)
         {
             // Générer une position aléatoire à l'intérieur de la pièce en tenant compte des marges de 4

@@ -14,7 +14,7 @@ public class FollowpathAstar : MonoBehaviour
 
     void Awake()
     {
-        grid = FindObjectOfType<Grida>(); // Assurez-vous que la grille est référencée
+        grid = FindObjectOfType<Grida>(); 
     }
 
     void Update()
@@ -30,7 +30,7 @@ public class FollowpathAstar : MonoBehaviour
         path = newPath;
         currentPathIndex = 0;
         isFollowingPath = true;
-        Debug.Log("Starting path with " + path.Count + " nodes.");
+        
     }
 
     void MovePlayerAlongPath()

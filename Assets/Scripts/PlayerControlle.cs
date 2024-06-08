@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     public Animator animator; // Référence à l'Animator
     public float moveSpeed = 0.05f; // Vitesse de déplacement configurable
      public UIHandler uiHandler; // Référence à UIHandler
-    int i=0;
+    
 
     private Vector2 input;
     private float speed;

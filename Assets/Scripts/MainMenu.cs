@@ -4,6 +4,8 @@ public class MenuManager : MonoBehaviour
 {
     public GameObject MainMenu;
     public GameObject OptionMenu;
+  
+
 
     // Start is called before the first frame update
     void Start()
@@ -13,6 +15,7 @@ public class MenuManager : MonoBehaviour
 
     public void ShowMainMenu()
     {
+     
         MainMenu.SetActive(true);
         OptionMenu.SetActive(false);
     }

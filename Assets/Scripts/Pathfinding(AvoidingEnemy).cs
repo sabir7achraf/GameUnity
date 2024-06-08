@@ -6,10 +6,12 @@ public class PathFinding : MonoBehaviour
 {
     public Transform seeker, target;
     private Grida grid;
+    public GameObject winBar;
     private FollowpathAstar pathFollower;  // Référence au script de suivi du chemin
     public float enemyAvoidanceRadius = 1.5f;  // Ajuster le rayon pour éviter les ennemis
     public int enemyProximityPenalty = 10;  // Pénalité pour les nœuds à proximité des ennemis
-    public int unwalkableProximityPenalty = 5;  // Pénalité pour les nœuds à proximité des nœuds non praticables
+    public int unwalkableProximityPenalty = 5;
+    private bool hasArrived = false;  // Pénalité pour les nœuds à proximité des nœuds non praticables
     void Awake()
     {
         grid = GetComponent<Grida>();
@@ -19,6 +21,7 @@ public class PathFinding : MonoBehaviour
     void Update()
     {
         FindAndFollowPath(seeker.position, target.position);
+        CheckArrival();
     }
 
     public void FindAndFollowPath(Vector2 startPos, Vector2 targetPos)
@@ -28,26 +31,16 @@ public class PathFinding : MonoBehaviour
             Debug.LogError("Start or target position is null");
             return;
         }
-
         List<Node> path = FindPath(startPos, targetPos);
         if (path != null && path.Count > 0)
         {
-            Debug.Log("Path found with " + path.Count + " nodes.");
             pathFollower.StartPath(path);  // Démarrer le suivi du chemin
         }
-        else
-        {
-            Debug.LogError("No path found.");
-        }
     }
-
     public List<Node> FindPath(Vector2 startPos, Vector2 targetPos)
     {
         Node startNode = grid.NodeFromWorldPoint(startPos);
         Node targetNode = grid.NodeFromWorldPoint(targetPos);
-
-        Debug.Log($"Start Node: ({startNode.gridX}, {startNode.gridY}) - Walkable: {startNode.walkable}");
-        Debug.Log($"Target Node: ({targetNode.gridX}, {targetNode.gridY}) - Walkable: {targetNode.walkable}");
 
         if (!startNode.walkable || !targetNode.walkable)
         {
@@ -99,6 +92,7 @@ public class PathFinding : MonoBehaviour
                 }
             }
         }
+       
         return null;
     }
 
@@ -127,7 +121,7 @@ public class PathFinding : MonoBehaviour
         else
             distance = 14 * dstX + 10 * (dstY - dstX);
 
-        // Ajoutez un coût supplémentaire pour les nœuds qui sont à proximité des ennemis
+       
         if (IsEnemyNear(nodeA))
         {
             distance += enemyProximityPenalty;
@@ -191,4 +185,20 @@ bool IsUnwalkableNear(Node node)
     }
     return false;
 }
+ void CheckArrival()
+    {
+        if (!hasArrived){
+        float distanceToTarget = Vector3.Distance(seeker.position, target.position);
+        if (distanceToTarget < 0.5f) 
+        {
+
+            Debug.Log("arrived!!");
+            hasArrived = true;
+            winBar.SetActive(true);
+            gameObject.SetActive(false);
+            
+
+        }
+    }
+    }
 }

@@ -33,14 +33,14 @@ public class Grida : MonoBehaviour
                 Vector2 worldPoint = worldBottomLeft + Vector2.right * (x * nodeDiameter + nodeRadius) + Vector2.up * (y * nodeDiameter + nodeRadius);
                 bool walkable = !(Physics2D.OverlapCircle(worldPoint, nodeRadius, unwalkableMask));
                 grid[x, y] = new Node(walkable, worldPoint, x, y);
-                if (!walkable)
-                {
-                    Debug.Log($"Node at ({x},{y}) is not walkable.");
-                }
-                else
-                {
-                    Debug.Log($"Node at ({x},{y}) is walkable.");
-                }
+                // if (!walkable)
+                // {
+                //     Debug.Log($"Node at ({x},{y}) is not walkable.");
+                // }
+                // else
+                // {
+                //     Debug.Log($"Node at ({x},{y}) is walkable.");
+                // }
             }
         }
     }
@@ -81,22 +81,22 @@ public class Grida : MonoBehaviour
     }
 
     public List<Node> path;
-    // void OnDrawGizmos()
-    // {
-    //     Gizmos.DrawWireCube(transform.position + Vector3.right * gridWorldSize.x / 2 + Vector3.up * gridWorldSize.y / 2, new Vector3(gridWorldSize.x, gridWorldSize.y, 1));
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawWireCube(transform.position + Vector3.right * gridWorldSize.x / 2 + Vector3.up * gridWorldSize.y / 2, new Vector3(gridWorldSize.x, gridWorldSize.y, 1));
 
-    //     if (grid != null)
-    //     {
-    //         foreach (Node n in grid)
-    //         {
-    //             Gizmos.color = (n.walkable) ? Color.white : Color.red;
-    //             if (path != null)
-    //                 if (path.Contains(n))
-    //                     Gizmos.color = Color.black;
-    //             Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
-    //         }
-    //     }
-    // }
+        if (grid != null)
+        {
+            foreach (Node n in grid)
+            {
+                Gizmos.color = (n.walkable) ? Color.white : Color.red;
+                if (path != null)
+                    if (path.Contains(n))
+                        Gizmos.color = Color.green;
+                Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
+            }
+        }
+    }
 
     public Vector3 WorldPointFromNode(Node node)
     {
@@ -112,7 +112,7 @@ public class Grida : MonoBehaviour
             Node node = grid[x, y];
             if (IsUnwalkableNear(node))
             {
-                // Ajoutez la pénalité à la valeur de coût du nœud
+                
                 node.gCost += unwalkableProximityPenalty;
             }
         }
@@ -121,7 +121,7 @@ public class Grida : MonoBehaviour
 
 public bool IsUnwalkableNear(Node node)
 {
-    // Vérifiez les nœuds qui sont à une plus grande distance
+  
     for (int x = -2; x <= 2; x++)
     {
         for (int y = -2; y <= 2; y++)
