@@ -64,20 +64,18 @@ public class DijkstraPathfinding : MonoBehaviour
             {
                 return RetracePath(startNode, targetNode);
             }
-
+            
             foreach (Node neighbour in grid.GetNeighbours(currentNode))
             {
                 if (!neighbour.walkable || closedSet.Contains(neighbour))
                 {
                     continue;
                 }
-
                 int newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour);
                 if (newMovementCostToNeighbour < neighbour.gCost || !openSet.Contains(neighbour))
                 {
                     neighbour.gCost = newMovementCostToNeighbour;
                     neighbour.parent = currentNode;
-
                     if (!openSet.Contains(neighbour))
                     {
                         openSet.Add(neighbour);
@@ -85,7 +83,6 @@ public class DijkstraPathfinding : MonoBehaviour
                 }
             }
         }
-
         return null; // Aucun chemin trouvé
     }
 

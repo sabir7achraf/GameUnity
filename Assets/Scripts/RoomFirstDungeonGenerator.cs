@@ -110,8 +110,8 @@ public class RoomFirstDungeonGenerator : RandomWalkMap
     
         // Déplacement du boss dans le room le plus éloigné
         Vector3 bossPosition = new Vector3(
-            Random.Range(lastRoom.min.x + 2, lastRoom.max.x - 2),
-            Random.Range(lastRoom.min.y + 2, lastRoom.max.y - 2),
+            Random.Range(lastRoom.min.x + 3, lastRoom.max.x - 3),
+            Random.Range(lastRoom.min.y + 3, lastRoom.max.y - 3),
             0
         );
         boss.position = bossPosition;
